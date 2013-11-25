@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>image_show v0.2</title>
+		
+		<meta http-equiv="imagetoolbar" content="no" />
+
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.innerfade.js"></script>
+		<script type="text/javascript">
+	   $(document).ready(
+				function(){
+					$('#news').innerfade({
+						animationtype: 'slide',
+						speed: 750,
+						timeout: 2000,
+						type: 'random',
+						containerheight: '1em'
+					});
+					
+					$('ul#portfolio').innerfade({
+						speed: 1000,
+						timeout: 5000,
+						type: 'sequence',
+						containerheight: '220px'
+					});
+					
+					$('.fade').innerfade({
+						speed: 1000,
+						timeout: 6000,
+						type: 'random_start',
+						containerheight: '1.5em'
+					});
+					
+					$('.adi').innerfade({
+						speed: 'slow',
+						timeout: 5000,
+						type: 'random',
+						containerheight: '150px'
+					});
+
+			});
+  	</script>
+
+		<link rel="stylesheet" href="css/reset.css"  type="text/css" media="all" />
+		<link rel="stylesheet" href="css/fonts.css"  type="text/css" media="all" />
+		<style type="text/css" media="screen, projection">
+					@import url(css/jq_fade.css);
+		</style>		
+	</head>
+	<body>				
+				<ul id="portfolio">					
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2013/0326/20130326024154456.jpg" alt="Good Guy bad Guy" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504023148159.jpg" alt="Whizzkids" /></a>
+					</li>					
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504023416302.jpg" alt="K?nigin Mutter" /></a>
+					</li>					
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504023416581.jpg" alt="RT Hybride Archivierung" /></a>
+					</li>		
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2013/0403/20130403012655347.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504021656331.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032854816.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032700961.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032700446.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032304232.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032002311.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032002405.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118031609660.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+					<li>
+						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1115/20091115112818317.jpg" alt="TüV SüD Gruppe" /></a>
+					</li>
+
+				</ul>
+</body>
+</html>
+
