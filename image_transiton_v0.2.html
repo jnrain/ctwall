@@ -3,14 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>image_show v0.2</title>
-		
+
 		<meta http-equiv="imagetoolbar" content="no" />
 
-		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery.innerfade.js"></script>
 		<script type="text/javascript">
-	   $(document).ready(
-				function(){
+
+				function init(){
 					$('#news').innerfade({
 						animationtype: 'slide',
 						speed: 750,
@@ -18,28 +18,52 @@
 						type: 'random',
 						containerheight: '1em'
 					});
-					
+
 					$('ul#portfolio').innerfade({
 						speed: 1000,
 						timeout: 5000,
 						type: 'sequence',
 						containerheight: '220px'
 					});
-					
+
 					$('.fade').innerfade({
 						speed: 1000,
 						timeout: 6000,
 						type: 'random_start',
 						containerheight: '1.5em'
 					});
-					
+
 					$('.adi').innerfade({
 						speed: 'slow',
 						timeout: 5000,
 						type: 'random',
 						containerheight: '150px'
 					});
+				}
 
+		$(document).ready(
+				function() {
+				$.ajax({
+					url:'http://pywejn.sinaapp.com/api/school/news/getlist',
+					dataType:"jsonp",
+					jsonp:"jsonpcallback",
+					success:function(result){
+						console.log(result);
+						$.each(result, function(i, data){
+							if (data.picurl!=""){
+								li = document.createElement("li");
+								img = document.createElement("img");
+								$(img).attr("src",data.picurl);
+								div = document.createElement("div");
+								$(div).append(data.title);
+								$(li).append(img).append(div);
+								$("#portfolio").append(li);
+							}
+
+						});
+						init();
+					}
+				});
 			});
   	</script>
 
@@ -47,52 +71,10 @@
 		<link rel="stylesheet" href="css/fonts.css"  type="text/css" media="all" />
 		<style type="text/css" media="screen, projection">
 					@import url(css/jq_fade.css);
-		</style>		
+		</style>
 	</head>
-	<body>				
-				<ul id="portfolio">					
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2013/0326/20130326024154456.jpg" alt="Good Guy bad Guy" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504023148159.jpg" alt="Whizzkids" /></a>
-					</li>					
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504023416302.jpg" alt="K?nigin Mutter" /></a>
-					</li>					
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504023416581.jpg" alt="RT Hybride Archivierung" /></a>
-					</li>		
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2013/0403/20130403012655347.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2012/0504/20120504021656331.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032854816.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032700961.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032700446.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032304232.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032002311.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118032002405.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1118/20091118031609660.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
-					<li>
-						<img src="http://photo.jiangnan.edu.cn/uploadfile/2009/1115/20091115112818317.jpg" alt="TüV SüD Gruppe" /></a>
-					</li>
+	<body>
+				<ul id="portfolio">
 
 				</ul>
 </body>

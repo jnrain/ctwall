@@ -22,3 +22,26 @@ ctwall
 
 不过一期工程的时间方面改为了11天
 功能方面...期待有更多转场效果
+
+## 读取[江南大学新闻](http://xinwen.jiangnan.edu.cn/news/)
+
+### API
+
+[http://2.pywejn.sinaapp.com/api/school/news/getlist](http://2.pywejn.sinaapp.com/api/school/news/getlist)
+
+返回数据格式
+
+```jsonp   
+
+jsonpcallback(
+[{
+	url: "新闻地址",
+	picurl: "新闻图片地址(若学校懒到未配图则返回空字符串)",
+	title: "新闻标题"
+ },
+...
+])```
+
+**API地址暂时用于测试，需要上线时可修改**
+
+
