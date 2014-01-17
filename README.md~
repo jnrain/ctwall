@@ -31,7 +31,7 @@ ctwall
 ```jsonpcallback(
 [{
 	url: "新闻地址",
-	picurl: "新闻图片地址(若学校懒到未配图则返回空字符串)",
+	picurl: "新闻图片地址",
 	title: "新闻标题"
  },
 ...
