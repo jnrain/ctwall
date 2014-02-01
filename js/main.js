@@ -6,6 +6,11 @@ requirejs(['jquery'], function($) {
     ARTICLE_MAX_DURATION: 40000,
     ARTICLE_STANDARD_LENGTH: 600,
     ARTICLE_STANDARD_DURATION: 30000,
+    SOURCE_MAP: {
+      jw: "教务处",
+      xinwen: "江大新闻网",
+      dm: "数字媒体学院"
+    }
   };
 
   var CTWall = {
@@ -33,6 +38,7 @@ requirejs(['jquery'], function($) {
       }
 
       $('.current-article__content').html(contentHTML.join('\n'));
+      $('.current-site__site-name').text(CTWallConfig.SOURCE_MAP[article.source]);
     },
     initFeed: function() {
       $.getJSON('ctwall-feed.json')

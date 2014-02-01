@@ -171,5 +171,14 @@ html {
   border-bottom: 2px solid #2a1710;
 }
 
+.current-site__site-name {
+  background-color: #2a1710;
+  color: #efd984;
+
+  font-family: "MF YueHei (Noncommercial)";
+  font-size: 200%;
+  padding: 0 0.5em;
+}
+
 
 /* vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: */
