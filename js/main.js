@@ -17,6 +17,7 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
 
   var CTWall = {
     state: {
+      articles: {},
       qrcode: null
     },
     durationFromArticle: function(article) {
@@ -48,6 +49,39 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
       // QRCode
       CTWall.state.qrcode.makeCode(article.url);
     },
+    makeSiteElement: function(source) {
+      return $('<li />')
+        .addClass('article-nav__sites__site')
+        .text(CTWallConfig.SOURCE_MAP[source]);
+    },
+    populateSites: function(articles) {
+      var sitesListElem = $('.article-nav__sites');
+
+      sitesListElem.empty();
+      for (var source in articles) {
+        console.log("[ctwall] populating site '" + source + "'");
+        sitesListElem.append(CTWall.makeSiteElement(source));
+      }
+    },
+    makeItemElement: function(article) {
+      return $('<li />')
+        .addClass('current-site__news-items__item')
+        .text(article.title);
+    },
+    populateArticleList: function(articles, source) {
+      var articleListElem = $('.current-site__news-items'),
+          sourceItems = articles[source];
+
+      console.log("[ctwall] populating for source '" + source + "'");
+
+      articleListElem.empty();
+      for (var i = 0; i < sourceItems.length; i++) {
+        var article = sourceItems[i];
+
+        console.log("[ctwall] populating article ", article);
+        articleListElem.append(CTWall.makeItemElement(article));
+      }
+    },
     initQRCode: function() {
       // 注意必须传入原生 DOM 元素
       CTWall.state.qrcode = new QRCode(
@@ -65,6 +99,25 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
 
         // 初始化 QRCode
         CTWall.initQRCode();
+
+        // 对文章分类
+        var articleList = data.l;
+
+        articleList.forEach(function(article) {
+          var sourceMaybe = CTWall.state.articles[article.source];
+
+          if (typeof sourceMaybe === 'undefined') {
+            CTWall.state.articles[article.source] = [];
+          }
+
+          CTWall.state.articles[article.source].push(article);
+        });
+
+        // 初始化站点列表
+        CTWall.populateSites(CTWall.state.articles);
+
+        // 初始化站点内新闻列表
+        CTWall.populateArticleList(CTWall.state.articles, data.l[0].source);
 
         // 开始文章显示
         CTWall.switchArticle(data.l[0]);
