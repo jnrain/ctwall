@@ -52,11 +52,16 @@ requirejs(['jquery'], function($) {
   };
 
   var WallClock = {
+    zeropad: function(x) {
+      if (x >= 10)
+        return x.toString();
+      return '0' + x.toString();
+    },
     pulse: function() {
       var now = new Date();
 
-      $('.datetime__time__hour').text(now.getHours());
-      $('.datetime__time__minute').text(now.getMinutes());
+      $('.datetime__time__hour').text(WallClock.zeropad(now.getHours()));
+      $('.datetime__time__minute').text(WallClock.zeropad(now.getMinutes()));
       $('.datetime__date__month').text(now.getMonth() + 1);
       $('.datetime__date__day').text(now.getDate());
       $('.datetime__weekday').text('日一二三四五六'[now.getDay()]);
