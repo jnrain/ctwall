@@ -31,7 +31,8 @@ html {
   width: 400px;
 }
 
-.screen-header__logo__title, .screen-header__logo__subtitle {
+.screen-header__logo__title,
+.screen-header__logo__subtitle {
   position: absolute;
 }
 
@@ -64,7 +65,9 @@ html {
   width: 300px;
 }
 
-.datetime__time, .datetime__date, .datetime__weekday {
+.datetime__time,
+.datetime__date,
+.datetime__weekday {
   display: block;
 }
 
@@ -72,11 +75,14 @@ html {
   content: ":";
 }
 
-.datetime__time__hour, .datetime__time__minute {
+.datetime__time__hour,
+.datetime__time__minute {
   font-size: 110px;
 }
 
-.datetime__date__day, .datetime__date__month, .datetime__weekday {
+.datetime__date__day,
+.datetime__date__month,
+.datetime__weekday {
   font-size: 48px;
 }
 
@@ -109,7 +115,8 @@ html {
   content: "日";
 }
 
-.datetime__date__month:after, .datetime__date__day:after {
+.datetime__date__month:after,
+.datetime__date__day:after {
   font-family: "MF YueHei (Noncommercial) ExLightCond";
   font-size: 28px;
   position: relative;
@@ -165,8 +172,8 @@ html {
   overflow: hidden;
 }
 
-
-.article-nav__current-site, .article-nav__sites {
+.article-nav__current-site,
+.article-nav__sites {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
       -ms-box-sizing: border-box;
@@ -179,7 +186,6 @@ html {
 .article-nav__current-site {
   border-bottom: 2px solid #2a1710;
 }
-
 
 .current-site__site-name,
 .article-nav__sites__site {
