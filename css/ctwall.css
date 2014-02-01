@@ -1,0 +1,175 @@
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  font: 20px/1.5 "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  background-color: #efd984;
+  color: #2a1710;
+}
+
+.screen {
+  height: 100%;
+  width: 100%;
+}
+
+.screen-header {
+  /* background-color: #111; */
+  border-bottom: 2px solid #2a1710;
+  height: 110px;
+  position: relative;
+}
+
+.screen-header__logo {
+  bottom: 7px;
+  font-family: "MF YueHei (Noncommercial)";
+  left: 7px;
+  line-height: 1;
+  position: absolute;
+  top: 7px;
+  width: 400px;
+}
+
+.screen-header__logo__title, .screen-header__logo__subtitle {
+  position: absolute;
+}
+
+.screen-header__logo__title {
+  font-size: 60px;
+  letter-spacing: 10px;
+}
+
+.screen-header__logo__subtitle {
+  bottom: 0;
+  font-size: 30px;
+  letter-spacing: 13.5px;
+}
+
+.screen-header__datetime {
+  font-family: "MF YueHei (Noncommercial) ExLight";
+  font-size: 0;
+  line-height: 1;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+
+.datetime__time {
+  font-family: "MF YueHei (Noncommercial) ExLight";
+  position: absolute;
+  right: 170px;
+  top: 0;
+  width: 300px;
+}
+
+.datetime__time, .datetime__date, .datetime__weekday {
+  display: block;
+}
+
+.datetime__time__hour:after {
+  content: ":";
+}
+
+.datetime__time__hour, .datetime__time__minute {
+  font-size: 110px;
+}
+
+.datetime__date__day, .datetime__date__month, .datetime__weekday {
+  font-size: 48px;
+}
+
+.datetime__date {
+  position: absolute;
+  right: 15px;
+  text-align: right;
+  top: 5px;
+  width: 150px;
+}
+
+.datetime__weekday {
+  position: absolute;
+  right: 15px;
+  text-align: right;
+  top: 55px;
+  width: 150px;
+}
+
+.datetime__weekday:before {
+  content: "星期";
+  display: inline;
+}
+
+.datetime__date__month:after {
+  content: "月";
+}
+
+.datetime__date__day:after {
+  content: "日";
+}
+
+.datetime__date__month:after, .datetime__date__day:after {
+  font-family: "MF YueHei (Noncommercial) ExLightCond";
+  font-size: 28px;
+  position: relative;
+  bottom: 2px;
+}
+
+.content-container {
+  position: absolute;
+  top: 112px;
+  bottom: 0;
+  width: 100%;
+}
+
+.current-article {
+  float: right;
+  width: 75%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  padding: 0.5em;
+}
+
+.article-nav {
+  /* background-color: #111; */
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  border-right: 2px solid #2a1710;
+  float: left;
+  width: 25%;
+  height: 100%;
+}
+
+.current-article__title {
+  font-size: 150%;
+  font-weight: bold;
+  margin: 0 0 1em 20px;
+}
+
+
+.article-nav__current-site, .article-nav__sites {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  height: 50%;
+}
+
+.article-nav__current-site {
+  border-bottom: 2px solid #2a1710;
+}
+
+
+/* vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: */

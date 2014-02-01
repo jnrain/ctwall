@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="cmn">
+<head>
+  <meta charset="utf-8" />
+  <title>江南听雨餐厅墙</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="江南听雨网信息发布平台餐厅墙项目">
+  <meta name="author" content="JNRain">
+
+  <!-- styles -->
+  <link rel="stylesheet" href="http://static.jnrain.com/common/css/normalize.css" />
+  <link rel="stylesheet" href="http://static.jnrain.com/common/css/reset.css" />
+  <link rel="stylesheet" href="http://static.jnrain.com/common/css/clear.css" />
+
+  <link rel="stylesheet" href="css/ctwall.css" />
+
+  <!-- framework js -->
+  <script src="//static.jnrain.com/common/js/config.js"></script>
+  <script src="//static.jnrain.com/common/js/require.js"></script>
+
+  <!-- [if lt IE 9]
+    just ignore them for the moment
+  [endif] -->
+</head>
+<body>
+<div class="screen">
+  <header class="screen-header">
+    <div class="screen-header__logo">
+      <span class="screen-header__logo__title">江南听雨网</span>
+      <span class="screen-header__logo__subtitle">校内信息服务频道</span>
+    </div>
+    <div class="screen-header__datetime">
+      <span class="datetime__time">
+        <span class="datetime__time__hour"></span>
+        <span class="datetime__time__minute"></span>
+      </span>
+      <span class="datetime__date">
+        <span class="datetime__date__month"></span>
+        <span class="datetime__date__day"></span>
+      </span>
+      <span class="datetime__weekday"></span>
+    </div>
+  </header>
+
+  <div class="content-container">
+    <article class="current-article">
+      <h1 class="current-article__title"></h1>
+      <section class="current-article__content">
+      </section>
+    </article>
+
+    <aside class="article-nav">
+      <section class="article-nav__current-site">
+        <h2 class="current-site__site-name"></h2>
+        <ul class="current-site__news-items">
+          <!-- <li class="current-site__news-items__item"></li> -->
+        </ul>
+      </section>
+      <ul class="article-nav__sites">
+        <!-- <li class="article-nav__sites_site"></li> -->
+      </ul>
+    </aside>
+    <footer class="screen-footer">
+    </footer>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+<!-- vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: -->
+</html>
