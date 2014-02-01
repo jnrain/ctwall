@@ -1,4 +1,4 @@
-requirejs(['jquery'], function($) {
+requirejs(['jquery', 'qrcode'], function($, QRCode) {
   'use strict';
 
   var CTWallConfig = {
@@ -10,10 +10,15 @@ requirejs(['jquery'], function($) {
       jw: "教务处",
       xinwen: "江大新闻网",
       dm: "数字媒体学院"
-    }
+    },
+    QRCODE_DIMENSION: 150,
+    QRCODE_BACKGROUND: "#efd984"
   };
 
   var CTWall = {
+    state: {
+      qrcode: null
+    },
     durationFromArticle: function(article) {
       var length = article.content.length;
       var dur = length / ARTICLE_STANDARD_LENGTH * ARTICLE_STANDARD_DURATION;
@@ -39,11 +44,29 @@ requirejs(['jquery'], function($) {
 
       $('.current-article__content').html(contentHTML.join('\n'));
       $('.current-site__site-name').text(CTWallConfig.SOURCE_MAP[article.source]);
+
+      // QRCode
+      CTWall.state.qrcode.makeCode(article.url);
+    },
+    initQRCode: function() {
+      // 注意必须传入原生 DOM 元素
+      CTWall.state.qrcode = new QRCode(
+          $('.current-article__qrcode')[0],
+          {
+            width: CTWallConfig.QRCODE_DIMENSION,
+            height: CTWallConfig.QRCODE_DIMENSION,
+            colorLight: CTWallConfig.QRCODE_BACKGROUND
+          });
     },
     initFeed: function() {
       $.getJSON('ctwall-feed.json')
       .done(function(data) {
         console.log('[ctwall] Got feed:', data);
+
+        // 初始化 QRCode
+        CTWall.initQRCode();
+
+        // 开始文章显示
         CTWall.switchArticle(data.l[0]);
       }).fail(function() {
         console.log('feed request failed');

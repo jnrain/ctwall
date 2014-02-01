@@ -136,6 +136,19 @@ html {
   padding: 0.5em;
 }
 
+.current-article__title {
+  font-size: 150%;
+  font-weight: bold;
+  margin: 0 0 0.5em 20px;
+}
+
+.current-article__qrcode {
+  float: left;
+  width: 150px;
+  height: 150px;
+  margin: 0 0.5em 0 0;
+}
+
 .article-nav {
   /* background-color: #111; */
   -webkit-box-sizing: border-box;
@@ -148,12 +161,6 @@ html {
   float: left;
   width: 25%;
   height: 100%;
-}
-
-.current-article__title {
-  font-size: 150%;
-  font-weight: bold;
-  margin: 0 0 1em 20px;
 }
 
 
