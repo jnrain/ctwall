@@ -12,7 +12,8 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
       dm: "数字媒体学院"
     },
     QRCODE_DIMENSION: 150,
-    QRCODE_BACKGROUND: "#efd984"
+    QRCODE_BACKGROUND: "#efd984",
+    SHORT_URL_DOMAIN: "127.0.0.1:9090"
   };
 
   var CTWall = {
@@ -29,6 +30,14 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
       if (dur > ARTICLE_MAX_DURATION)
         return ARTICLE_MAX_DURATION;
       return dur;
+    },
+    urlFromArticle: function(article) {
+      // 没有短 URL, 就返回长的, 否则拼出来一个短的
+      return (
+          article.short_url
+          ? ('http://' + CTWallConfig.SHORT_URL_DOMAIN + '/g/' + article.short_url)
+          : article.url
+          );
     },
     switchArticle: function(article) {
       $('.current-article__title').text(article.title);
@@ -47,7 +56,7 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
       $('.current-site__site-name').text(CTWallConfig.SOURCE_MAP[article.source]);
 
       // QRCode
-      CTWall.state.qrcode.makeCode(article.url);
+      CTWall.state.qrcode.makeCode(CTWall.urlFromArticle(article));
     },
     makeSiteElement: function(source) {
       return $('<li />')
