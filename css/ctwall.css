@@ -169,7 +169,6 @@ html {
   float: left;
   width: 25%;
   height: 100%;
-  overflow: hidden;
 }
 
 .article-nav__current-site,
@@ -181,6 +180,7 @@ html {
           box-sizing: border-box;
 
   height: 50%;
+  overflow: hidden;
 }
 
 .article-nav__current-site {
