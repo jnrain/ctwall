@@ -15,7 +15,7 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
     QRCODE_BACKGROUND: "#efd984",
     API_DOMAIN: "spider.api.jnrain.com",
     SHORT_URL_DOMAIN: "spurl.jnrain.com",
-    SHORT_URL_PREFIXED: false
+    SHORT_URL_INFIXED: false
   };
 
   var CTWall = {
@@ -35,7 +35,7 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
     },
     shortURLFromTag: function(tag) {
       var prefix = 'http://' + CTWallConfig.SHORT_URL_DOMAIN + '/',
-          pathInfix = CTWallConfig.SHORT_URL_PREFIXED ? 'g/' : '';
+          pathInfix = CTWallConfig.SHORT_URL_INFIXED ? 'g/' : '';
 
       return prefix + pathInfix + tag;
     },
@@ -109,6 +109,28 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
             colorLight: CTWallConfig.QRCODE_BACKGROUND
           });
     },
+    setMetadata: function(data) {
+      CTWallConfig.API_DOMAIN = data.api_domain;
+      CTWallConfig.SHORT_URL_DOMAIN = data.short_url_domain;
+      CTWallConfig.SHORT_URL_INFIXED = data.short_url_infixed;
+    },
+    initMeta: function() {
+      // 从元数据 API 初始化爬虫后端地址和短链服务特征, 覆盖脚本里固化的配置;
+      // 如果失败就不作任何改动.
+      $.getJSON('//meta.api.jnrain.com/campuspiders.json')
+        .done(function(data) {
+          console.log('[ctwall] Got metadata:', data);
+          CTWall.setMetadata(data);
+        }).fail(function() {
+          console.log('[ctwall] Failed to fetch metadata, using fallback value');
+        }).always(function() {
+          console.log('[ctwall] API domain:', CTWallConfig.API_DOMAIN);
+          console.log('[ctwall] Short URL domain:', CTWallConfig.SHORT_URL_DOMAIN);
+          console.log('[ctwall] Short URL address is infixed:', CTWallConfig.SHORT_URL_INFIXED);
+
+          CTWall.initFeed();
+        });
+    },
     initFeed: function() {
       $.getJSON('//' + CTWallConfig.API_DOMAIN + '/v1/feed/month/')
       .done(function(data) {
@@ -166,7 +188,7 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
     setInterval(WallClock.pulse, 1000);
 
     // 初始化新闻条目信息
-    CTWall.initFeed();
+    CTWall.initMeta();
   });
 });
 
