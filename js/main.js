@@ -1,4 +1,4 @@
-requirejs(['jquery', 'qrcode'], function($, QRCode) {
+requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
   'use strict';
 
   var CTWallConfig = {
@@ -21,7 +21,9 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
   var CTWall = {
     state: {
       articles: {},
-      qrcode: null
+      qrcode: null,
+      siteList: [],
+      currentSiteIdx: null
     },
     durationFromArticle: function(article) {
       var length = article.content.length;
@@ -71,12 +73,34 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
         .addClass('article-nav__sites__site')
         .text(CTWallConfig.SOURCE_MAP[source]);
     },
-    populateSites: function(articles) {
-      var sitesListElem = $('.article-nav__sites');
+    populateSites: function(siteList) {
+      var sitesListElem = $('.article-nav__sites'),
+          numSites = siteList.length;
 
       sitesListElem.empty();
-      for (var source in articles) {
+
+      // 从第 2 个站开始按顺序加入站点列表, 这样站点列表第一项总是下一个要展示
+      // 的站点. 这里使用了取模运算让最后一次循环绕回第一个元素
+      for (var i = 0; i < numSites; i++) {
+        var source = siteList[(i + 1) % numSites];
+
         console.log("[ctwall] populating site '" + source + "'");
+        sitesListElem.append(CTWall.makeSiteElement(source));
+      }
+
+      // 检查容器的高度足够显示多少个站, 至少要有这么多个站点元素才能制造出
+      // 一种无限滚动的错觉
+      // 现在站点元素的容器 (列表元素) 外边还有一层容器, 我们需要的是容器的
+      // 内侧高度
+      var containerHeight = sitesListElem.parent().innerHeight(),
+          averageSiteElemHeight = sitesListElem.outerHeight() / numSites,
+          numSitesDisplayed = Math.ceil(containerHeight / averageSiteElemHeight);
+
+      // 继续往列表中加入 numSitesDisplayed - 1 个元素
+      // 因为上一个站是第一个, 所以这次还是从第二个站开始
+      for (var i = 0; i < numSitesDisplayed; i++) {
+        var source = siteList[(i + 1) % numSites];
+        console.log("[ctwall] populating placeholder '" + source + "'");
         sitesListElem.append(CTWall.makeSiteElement(source));
       }
     },
@@ -98,6 +122,51 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
         console.log("[ctwall] populating article ", article);
         articleListElem.append(CTWall.makeItemElement(article));
       }
+    },
+    scrollUpOne: function(selector, callback) {
+      var targetElem = $(selector),
+          targetChildElem = $(targetElem.children()[0]),
+          deltaHeight = targetChildElem.outerHeight();
+
+      targetElem.transition({top: '-=' + deltaHeight.toString() + 'px'}, callback);
+    },
+    resetScroll: function(selector) {
+      $(selector)
+        .css('left', '-100%')
+        .css('top', '0')
+        .transition({left: 0});
+    },
+    changeSiteName: function(name) {
+      var elem = $('.current-site__site-name');
+
+      elem.transition({top: '-100%'}, function() {
+        elem
+          .text(name)
+          .css('top', '100%')
+          .transition({top: '0'});
+      });
+    },
+    nextSite: function() {
+      var newSiteIdx = CTWall.state.currentSiteIdx + 1;
+      if (newSiteIdx == CTWall.state.siteList.length) {
+        // 已经没有下一个站了, 滚回第一个
+        newSiteIdx = 0;
+
+        // 让站点列表向上滚动一格
+        CTWall.scrollUpOne('.article-nav__sites', function() {
+          // 重置站点列表元素的位置
+          $('.article-nav__sites').css('top', '0');
+        });
+      } else {
+        // 让站点列表向上滚动一格
+        CTWall.scrollUpOne('.article-nav__sites');
+      }
+
+      // 更新当前站点变量
+      CTWall.state.currentSiteIdx = newSiteIdx;
+
+      // 更新当前站点名称显示
+      CTWall.changeSiteName(CTWallConfig.SOURCE_MAP[CTWall.state.siteList[newSiteIdx]]);
     },
     initQRCode: function() {
       // 注意必须传入原生 DOM 元素
@@ -153,7 +222,13 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
         });
 
         // 初始化站点列表
-        CTWall.populateSites(CTWall.state.articles);
+        CTWall.state.siteList = [];
+        for (var siteName in CTWall.state.articles) {
+          CTWall.state.siteList.push(siteName);
+        }
+        CTWall.state.currentSiteIdx = 0;
+
+        CTWall.populateSites(CTWall.state.siteList);
 
         // 初始化站点内新闻列表
         CTWall.populateArticleList(CTWall.state.articles, data.l[0].source);
@@ -184,6 +259,8 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
   };
 
   $(function() {
+    console.log('[ctwall] CTWall =', CTWall);
+
     // 时钟
     setInterval(WallClock.pulse, 1000);
 
