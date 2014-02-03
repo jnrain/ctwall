@@ -13,7 +13,9 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
     },
     QRCODE_DIMENSION: 150,
     QRCODE_BACKGROUND: "#efd984",
-    SHORT_URL_DOMAIN: "127.0.0.1:9090"
+    API_DOMAIN: "spider.api.jnrain.com",
+    SHORT_URL_DOMAIN: "spurl.jnrain.com",
+    SHORT_URL_PREFIXED: false
   };
 
   var CTWall = {
@@ -31,11 +33,17 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
         return ARTICLE_MAX_DURATION;
       return dur;
     },
+    shortURLFromTag: function(tag) {
+      var prefix = 'http://' + CTWallConfig.SHORT_URL_DOMAIN + '/',
+          pathInfix = CTWallConfig.SHORT_URL_PREFIXED ? 'g/' : '';
+
+      return prefix + pathInfix + tag;
+    },
     urlFromArticle: function(article) {
       // 没有短 URL, 就返回长的, 否则拼出来一个短的
       return (
           article.short_url
-          ? ('http://' + CTWallConfig.SHORT_URL_DOMAIN + '/g/' + article.short_url)
+          ? CTWall.shortURLFromTag(article.short_url)
           : article.url
           );
     },
@@ -102,7 +110,7 @@ requirejs(['jquery', 'qrcode'], function($, QRCode) {
           });
     },
     initFeed: function() {
-      $.getJSON('ctwall-feed.json')
+      $.getJSON('//' + CTWallConfig.API_DOMAIN + '/v1/feed/month/')
       .done(function(data) {
         console.log('[ctwall] Got feed:', data);
 
