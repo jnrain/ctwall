@@ -262,6 +262,12 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
           CTWall.state.articles[article.source].push(article);
         });
 
+        // 敲掉新闻网
+        // TODO: 更恰当的处理, 比如只在某时间段播放新闻
+        if (typeof CTWall.state.articles['xinwen'] !== 'undefined') {
+          delete CTWall.state.articles['xinwen'];
+        }
+
         // 初始化站点列表
         CTWall.state.siteList = [];
         for (var siteName in CTWall.state.articles) {
