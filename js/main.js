@@ -300,8 +300,8 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
 
       $('.datetime__time__hour').text(WallClock.zeropad(now.getHours()));
       $('.datetime__time__minute').text(WallClock.zeropad(now.getMinutes()));
-      $('.datetime__date__month').text(now.getMonth() + 1);
-      $('.datetime__date__day').text(now.getDate());
+      $('.datetime__date__month').text(WallClock.zeropad(now.getMonth() + 1));
+      $('.datetime__date__day').text(WallClock.zeropad(now.getDate()));
       $('.datetime__weekday').text('日一二三四五六'[now.getDay()]);
     }
   };
