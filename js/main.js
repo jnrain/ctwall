@@ -1,4 +1,4 @@
-requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
+requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function($, QRCode) {
   'use strict';
 
   var CTWallConfig = {
@@ -23,16 +23,17 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
       articles: {},
       qrcode: null,
       siteList: [],
-      currentSiteIdx: null
+      currentSiteIdx: null,
+      currentArticleIdx: null
     },
     durationFromArticle: function(article) {
       var length = article.content.length;
-      var dur = length / ARTICLE_STANDARD_LENGTH * ARTICLE_STANDARD_DURATION;
+      var dur = length / CTWallConfig.ARTICLE_STANDARD_LENGTH * CTWallConfig.ARTICLE_STANDARD_DURATION;
 
-      if (dur < ARTICLE_MIN_DURATION)
-        return ARTICLE_MIN_DURATION;
-      if (dur > ARTICLE_MAX_DURATION)
-        return ARTICLE_MAX_DURATION;
+      if (dur < CTWallConfig.ARTICLE_MIN_DURATION)
+        return CTWallConfig.ARTICLE_MIN_DURATION;
+      if (dur > CTWallConfig.ARTICLE_MAX_DURATION)
+        return CTWallConfig.ARTICLE_MAX_DURATION;
       return dur;
     },
     shortURLFromTag: function(tag) {
@@ -67,6 +68,11 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
 
       // QRCode
       CTWall.state.qrcode.makeCode(CTWall.urlFromArticle(article));
+
+      // 过一定时间显示下一篇文章, 显示时间长短由 durationFromArticle 函数确定
+      var duration = CTWall.durationFromArticle(article);
+      console.log('[ctwall] Next article in ' + duration.toString() + 'ms');
+      setTimeout(CTWall.nextArticle, duration);
     },
     makeSiteElement: function(source) {
       return $('<li />')
@@ -84,7 +90,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
       for (var i = 0; i < numSites; i++) {
         var source = siteList[(i + 1) % numSites];
 
-        console.log("[ctwall] populating site '" + source + "'");
+        // console.log("[ctwall] populating site '" + source + "'");
         sitesListElem.append(CTWall.makeSiteElement(source));
       }
 
@@ -100,7 +106,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
       // 因为上一个站是第一个, 所以这次还是从第二个站开始
       for (var i = 0; i < numSitesDisplayed; i++) {
         var source = siteList[(i + 1) % numSites];
-        console.log("[ctwall] populating placeholder '" + source + "'");
+        // console.log("[ctwall] populating placeholder '" + source + "'");
         sitesListElem.append(CTWall.makeSiteElement(source));
       }
     },
@@ -113,15 +119,18 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
       var articleListElem = $('.current-site__news-items'),
           sourceItems = articles[source];
 
-      console.log("[ctwall] populating for source '" + source + "'");
+      console.log("[ctwall] populating article list for source '" + source + "'");
 
       articleListElem.empty();
       for (var i = 0; i < sourceItems.length; i++) {
         var article = sourceItems[i];
 
-        console.log("[ctwall] populating article ", article);
+        // console.log("[ctwall] populating article ", article);
         articleListElem.append(CTWall.makeItemElement(article));
       }
+
+      // 动画效果
+      CTWall.resetScroll('.current-site__news-items');
     },
     scrollUpOne: function(selector, callback) {
       var targetElem = $(selector),
@@ -134,7 +143,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
       $(selector)
         .css('left', '-100%')
         .css('top', '0')
-        .transition({left: 0});
+        .transition({left: 0}, 750);
     },
     changeSiteName: function(name) {
       var elem = $('.current-site__site-name');
@@ -145,6 +154,34 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
           .css('top', '100%')
           .transition({top: '0'});
       });
+    },
+    nextArticle: function() {
+      var newArticleIdx = CTWall.state.currentArticleIdx + 1,
+          siteArticles = CTWall.state.articles[CTWall.state.siteList[CTWall.state.currentSiteIdx]];
+
+      if (newArticleIdx == siteArticles.length) {
+        // 当前站点已经全部展示完毕, 切换到下一个站的第一篇文章
+        CTWall.nextSite();
+        siteArticles = CTWall.state.articles[CTWall.state.siteList[CTWall.state.currentSiteIdx]];
+        newArticleIdx = 0;
+      } else {
+        // 上滚一篇文章
+        CTWall.scrollUpOne('.current-site__news-items');
+      }
+
+      // 取出并切换到下一篇文章
+      var article = siteArticles[newArticleIdx];
+      console.log(
+          '[ctwall] Switching to site '
+          + CTWall.state.currentSiteIdx.toString()
+          + ' article '
+          + newArticleIdx
+          + ':',
+          article
+          );
+      CTWall.switchArticle(article);
+
+      CTWall.state.currentArticleIdx = newArticleIdx;
     },
     nextSite: function() {
       var newSiteIdx = CTWall.state.currentSiteIdx + 1;
@@ -232,9 +269,11 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
 
         // 初始化站点内新闻列表
         CTWall.populateArticleList(CTWall.state.articles, data.l[0].source);
+        CTWall.state.currentArticleIdx = -1;
 
         // 开始文章显示
-        CTWall.switchArticle(data.l[0]);
+        // 刚才让当前文章处于第 0 站的第 -1 篇文章, 于是下一篇就是第 0 篇了
+        CTWall.nextArticle();
       }).fail(function() {
         console.log('feed request failed');
       });
@@ -263,6 +302,52 @@ requirejs(['jquery', 'qrcode', 'jquery.transit'], function($, QRCode) {
 
     // 时钟
     setInterval(WallClock.pulse, 1000);
+
+    // 全屏逻辑
+    // 检测全屏状态改变的事件, 并据此隐藏或显示鼠标. 点击页面任何位置开关全屏模式.
+    //
+    // 注意, 由于浏览器从安全角度出发, 此处不能由脚本自动触发进入全屏模式,
+    // 而必须由用户操作 (如点击) 触发, 否则会报如下错误信息 (以火狐为例):
+    //
+    //     全屏请求被拒绝，因为 Element.mozRequestFullScreen() 不是在一个短期运行的由用户引发的事件处理代码段中运行的。
+    //
+    // 但是, F11 进入的 "全屏" 模式不会触发全屏状态改变事件, 因此还必须提供一个交互机制,
+    // 以实现从脚本调用全屏 API 实现鼠标状态改变的功能.
+    //
+    // 事件处理函数
+    $(document).bind('fullscreenchange', function() {
+      var newStatus = $(document).fullScreen();
+
+      console.log('[ctwall] Fullscreen mode: now ' + (newStatus ? 'on' : 'off'));
+
+      // 隐藏或显示鼠标
+      $('.screen').css('cursor', newStatus ? 'none' : '');
+    });
+
+    // 鼠标点击函数
+    $('.screen').click(function() {
+      $(document).toggleFullScreen();
+    });
+
+    // 显示区域大小改变, 则等待一段时间后重新填充站点列表
+    // 等待一段时间是为了防止频繁操作页面带来的性能问题
+    (function() {
+      var resizeTimer = null;
+
+      $(window).resize(function() {
+        if (resizeTimer !== null) {
+          clearTimeout(resizeTimer);
+        }
+
+        // 最后一个大小改变事件发生 1 秒之后触发调整
+        resizeTimer = setTimeout(function() {
+          console.log('[ctwall] Resize complete, repopulate site list');
+          resizeTimer = null;
+
+          CTWall.populateSites(CTWall.state.siteList);
+        }, 1000);
+      });
+    })();
 
     // 初始化新闻条目信息
     CTWall.initMeta();
