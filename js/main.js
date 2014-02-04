@@ -201,9 +201,13 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
 
       // 更新当前站点变量
       CTWall.state.currentSiteIdx = newSiteIdx;
+      var newSource = CTWall.state.siteList[newSiteIdx];
 
       // 更新当前站点名称显示
-      CTWall.changeSiteName(CTWallConfig.SOURCE_MAP[CTWall.state.siteList[newSiteIdx]]);
+      CTWall.changeSiteName(CTWallConfig.SOURCE_MAP[newSource]);
+
+      // 更新站点内新闻列表
+      CTWall.populateArticleList(CTWall.state.articles, newSource);
     },
     initQRCode: function() {
       // 注意必须传入原生 DOM 元素
@@ -263,16 +267,15 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
         for (var siteName in CTWall.state.articles) {
           CTWall.state.siteList.push(siteName);
         }
-        CTWall.state.currentSiteIdx = 0;
-
         CTWall.populateSites(CTWall.state.siteList);
 
-        // 初始化站点内新闻列表
-        CTWall.populateArticleList(CTWall.state.articles, data.l[0].source);
-        CTWall.state.currentArticleIdx = -1;
+        // 初始化第一个站点的文章列表
+        CTWall.populateArticleList(CTWall.state.articles, CTWall.state.siteList[0]);
 
         // 开始文章显示
-        // 刚才让当前文章处于第 0 站的第 -1 篇文章, 于是下一篇就是第 0 篇了
+        // 让当前文章处于第 0 站的第 -1 篇文章, 于是下一篇就是第 0 篇了
+        CTWall.state.currentSiteIdx = 0;
+        CTWall.state.currentArticleIdx = -1;
         CTWall.nextArticle();
       }).fail(function() {
         console.log('feed request failed');
