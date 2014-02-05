@@ -23,7 +23,7 @@ html {
 
 .screen-header__logo {
   bottom: 7px;
-  font-family: "MF YueHei (Noncommercial)";
+  font-family: "MF YaYuan (Noncommercial)";
   left: 7px;
   line-height: 1;
   position: absolute;
@@ -44,11 +44,11 @@ html {
 .screen-header__logo__subtitle {
   bottom: 0;
   font-size: 30px;
-  letter-spacing: 13.5px;
+  letter-spacing: 14px;
 }
 
 .screen-header__datetime {
-  font-family: "MF YueHei (Noncommercial) ExLight";
+  font-family: "MF YaYuan (Noncommercial)";
   font-size: 0;
   line-height: 1;
   position: absolute;
@@ -58,9 +58,9 @@ html {
 }
 
 .datetime__time {
-  font-family: "MF YueHei (Noncommercial) ExLight";
+  font-family: "MF YaYuan (Noncommercial)";
   position: absolute;
-  right: 170px;
+  right: 180px;
   top: 0;
   width: 300px;
 }
@@ -91,15 +91,21 @@ html {
   right: 15px;
   text-align: right;
   top: 5px;
-  width: 150px;
+  width: 160px;
 }
 
 .datetime__weekday {
   position: absolute;
-  right: 15px;
+
+  /*
+   * 为了和上边的日期宽度相称, 需要 6px 的 letter-spacing, 宽度就会多出来 6px.
+   * 需要补偿
+   */
+  right: 9px;  /* 15 - 6 */
   text-align: right;
+  letter-spacing: 6px;
   top: 55px;
-  width: 150px;
+  width: 166px;  /* 160 + 6 */
 }
 
 .datetime__weekday:before {
@@ -117,10 +123,7 @@ html {
 
 .datetime__date__month:after,
 .datetime__date__day:after {
-  font-family: "MF YueHei (Noncommercial) ExLightCond";
   font-size: 28px;
-  position: relative;
-  bottom: 2px;
 }
 
 .content-container {
