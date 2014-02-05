@@ -7,10 +7,16 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
     ARTICLE_STANDARD_LENGTH: 600,
     ARTICLE_STANDARD_DURATION: 30000,
     SOURCE_MAP: {
+      dm: "数字媒体学院",
       jw: "教务处",
       xinwen: "江大新闻网",
       scc: "江大就业信息网",
-      dm: "数字媒体学院"
+      jdcy: "大学生创业网",
+      gs: "研究生院",
+      hq: "江大后勤信息网",
+      nic: "信息建管中心",
+      hqc: "江大后勤管理处",
+      bwch: "江大保卫处"
     },
     QRCODE_DIMENSION: 150,
     QRCODE_BACKGROUND: "#efd984",
