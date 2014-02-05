@@ -59,9 +59,11 @@ html {
 
 .datetime__time {
   font-family: "MF YaYuan (Noncommercial)";
+
   position: absolute;
   right: 180px;
-  top: 0;
+  top: -3px;
+
   width: 300px;
 }
 
