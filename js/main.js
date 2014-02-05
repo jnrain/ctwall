@@ -9,6 +9,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
     SOURCE_MAP: {
       jw: "教务处",
       xinwen: "江大新闻网",
+      scc: "江大就业信息网",
       dm: "数字媒体学院"
     },
     QRCODE_DIMENSION: 150,
