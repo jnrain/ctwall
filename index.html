@@ -45,22 +45,24 @@
 
   <div class="content-container">
     <article class="current-article">
-      <h1 class="current-article__title"></h1>
-      <section class="current-article__qrcode">
+      <section class="current-article__qrcode-container">
+        <section class="current-article__qrcode">
+        </section>
+        <div class="current-article__timer-container">
+          <div class="current-article__timer"
+            data-width="45"
+            data-height="45"
+            data-displayInput="false"
+            data-readOnly="true"
+            data-fgColor="#2a1710"
+            data-bgColor="transparent"
+            >
+          </div>
+        </div>
       </section>
+      <h1 class="current-article__title"></h1>
       <section class="current-article__content">
       </section>
-      <div class="current-article__timer-container">
-        <div class="current-article__timer"
-          data-width="45"
-          data-height="45"
-          data-displayInput="false"
-          data-readOnly="true"
-          data-fgColor="#2a1710"
-          data-bgColor="transparent"
-          >
-        </div>
-      </div>
     </article>
 
     <aside class="article-nav">
