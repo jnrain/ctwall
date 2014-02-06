@@ -23,7 +23,7 @@ html {
 
 .screen-header__logo {
   bottom: 7px;
-  font-family: "MF YaYuan (Noncommercial)";
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
   left: 7px;
   line-height: 1;
   position: absolute;
@@ -48,7 +48,7 @@ html {
 }
 
 .screen-header__datetime {
-  font-family: "MF YaYuan (Noncommercial)";
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
   font-size: 0;
   line-height: 1;
   position: absolute;
@@ -58,7 +58,7 @@ html {
 }
 
 .datetime__time {
-  font-family: "MF YaYuan (Noncommercial)";
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
 
   position: absolute;
   right: 200px;
@@ -232,7 +232,7 @@ html {
 
 .current-site__site-name,
 .article-nav__sites__site {
-  font-family: "MF YaYuan (Noncommercial)";
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
   font-size: 150%;
   padding: 0.2em 0 0.2em 0.25em;
 }
@@ -253,7 +253,7 @@ html {
   bottom: 5px;
   right: 5px;
 
-  font-family: "MF YaYuan (Noncommercial)";
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
   font-size: 12px;
   line-height: 1.2;
 
