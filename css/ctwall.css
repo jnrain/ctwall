@@ -192,6 +192,18 @@ html {
     padding: 6px;
 }
 
+.current-article__time {
+  display: block;
+  font-size: 75%;
+  text-align: center;
+}
+
+/*
+.current-article__time:before {
+  content: "发布时间: ";
+}
+*/
+
 .current-article__content {
   text-indent: 2em;
 }

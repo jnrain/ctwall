@@ -1,6 +1,12 @@
 requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.knob'], function($, QRCode) {
   'use strict';
 
+  var zeropad = (function(x) {
+      if (x >= 10)
+        return x.toString();
+      return '0' + x.toString();
+    });
+
   var CTWallConfig = {
     ARTICLE_MIN_DURATION: 10000,
     ARTICLE_MAX_DURATION: 40000,
@@ -46,6 +52,21 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
         return CTWallConfig.ARTICLE_MAX_DURATION;
       return dur;
     },
+    timeStringFromArticle: function(article) {
+      var date = new Date(article.ctime * 1000),
+          dateStr = date.toLocaleDateString();
+
+      if (date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
+        // 一般来说不会正好在午夜发新闻, 所以把这种情况理解为数据源只提供了
+        // 精确到日的数据. 这样的话就不显示到分钟了
+        return dateStr;
+      }
+
+      // 拼接小时分钟, 返回
+      var timeStr = zeropad(date.getHours()) + ':' + zeropad(date.getMinutes());
+
+      return dateStr + ' ' + timeStr;
+    },
     shortURLFromTag: function(tag) {
       var prefix = 'http://' + CTWallConfig.SHORT_URL_DOMAIN + '/',
           pathInfix = CTWallConfig.SHORT_URL_INFIXED ? 'g/' : '';
@@ -90,6 +111,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
 
       $('.current-article__content').html(contentHTML.join('\n'));
       $('.current-site__site-name').text(CTWallConfig.SOURCE_MAP[article.source]);
+      $('.current-article__time').text(CTWall.timeStringFromArticle(article));
 
       // QRCode
       CTWall.state.qrcode.makeCode(CTWall.urlFromArticle(article));
@@ -325,18 +347,13 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
   };
 
   var WallClock = {
-    zeropad: function(x) {
-      if (x >= 10)
-        return x.toString();
-      return '0' + x.toString();
-    },
     pulse: function() {
       var now = new Date();
 
-      $('.datetime__time__hour').text(WallClock.zeropad(now.getHours()));
-      $('.datetime__time__minute').text(WallClock.zeropad(now.getMinutes()));
-      $('.datetime__date__month').text(WallClock.zeropad(now.getMonth() + 1));
-      $('.datetime__date__day').text(WallClock.zeropad(now.getDate()));
+      $('.datetime__time__hour').text(zeropad(now.getHours()));
+      $('.datetime__time__minute').text(zeropad(now.getMinutes()));
+      $('.datetime__date__month').text(zeropad(now.getMonth() + 1));
+      $('.datetime__date__day').text(zeropad(now.getDate()));
       $('.datetime__weekday').text('日一二三四五六'[now.getDay()]);
     }
   };
