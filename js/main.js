@@ -8,8 +8,8 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
     });
 
   var CTWallConfig = {
-    ARTICLE_MIN_DURATION: 10000,
-    ARTICLE_MAX_DURATION: 40000,
+    ARTICLE_MIN_DURATION: 7000,
+    ARTICLE_MAX_DURATION: 35000,
     ARTICLE_STANDARD_LENGTH: 600,
     ARTICLE_STANDARD_DURATION: 30000,
     SOURCE_MAP: {
@@ -42,9 +42,27 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       articleProgressElem: null,
       articleProgressTimer: null
     },
+    normalizeContent: function(s) {
+      var tmp = s;
+
+      // 去除标点数字等阅读速度极快的字符和空白字符
+      tmp = tmp.replace(/[0-9\s　,.:;<>()\[\]{}/\\，、．。：；“”‘’（）【】〔〕《》]+/g, '');
+
+      // 按照一次 7 个字符为人阅读速度极限, 把连续的字母数字等转换为虚拟的 "字"
+      // 进而可以按虚拟的字数估算阅读时间
+      tmp = tmp.replace(/[A-Za-z@+%-]{1,7}/g, ' ');
+      console.log(tmp);
+
+      return tmp;
+    },
     durationFromArticle: function(article) {
-      var length = article.content.length;
-      var dur = length / CTWallConfig.ARTICLE_STANDARD_LENGTH * CTWallConfig.ARTICLE_STANDARD_DURATION;
+      var normalizedContent = CTWall.normalizeContent(article.content),
+          length = normalizedContent.length,
+          dur = Math.floor(length / CTWallConfig.ARTICLE_STANDARD_LENGTH * CTWallConfig.ARTICLE_STANDARD_DURATION);
+
+      // console.log('[ctwall] durationFromArticle: raw length = ' + article.content.length.toString());
+      // console.log('[ctwall] durationFromArticle: normalized length = ' + length.toString());
+      // console.log('[ctwall] durationFromArticle: raw duration = ' + dur.toString() + 'ms');
 
       if (dur < CTWallConfig.ARTICLE_MIN_DURATION)
         return CTWallConfig.ARTICLE_MIN_DURATION;
