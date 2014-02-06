@@ -136,6 +136,7 @@ html {
 }
 
 .current-article {
+  position: relative;
   float: right;
   width: 75%;
   height: 100%;
@@ -146,13 +147,28 @@ html {
           box-sizing: border-box;
 
   padding: 0.5em;
-  text-indent: 2em;
+
+  overflow: hidden;
 }
 
 .current-article__title {
   font-size: 150%;
   font-weight: bold;
-  margin: 0 0 0.2em 40px;
+  text-align: center;
+
+  padding: 0 160px 0;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  position: absolute;
+  top: 0;
+  left: 10px;  /* 这个和下一个 10px 是容器元素的内边距 */
+  right: 10px;
+
+  height: 90px;
 }
 
 .current-article__qrcode {
@@ -160,6 +176,11 @@ html {
   width: 150px;
   height: 150px;
   margin: 0 0.5em 0 0;
+}
+
+.current-article__content {
+  margin: 90px 0 0;
+  text-indent: 2em;
 }
 
 .article-nav {
