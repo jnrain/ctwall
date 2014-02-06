@@ -93,7 +93,7 @@ html {
   right: 15px;
   text-align: right;
   top: 5px;
-  width: 160px;
+  width: 200px;
 }
 
 .datetime__weekday {
@@ -107,7 +107,7 @@ html {
   text-align: right;
   letter-spacing: 6px;
   top: 55px;
-  width: 166px;  /* 160 + 6 */
+  width: 200px;  /* 留够空间 */
 }
 
 .datetime__weekday:before {
