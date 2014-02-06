@@ -51,7 +51,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       // 按照一次 7 个字符为人阅读速度极限, 把连续的字母数字等转换为虚拟的 "字"
       // 进而可以按虚拟的字数估算阅读时间
       tmp = tmp.replace(/[A-Za-z@+%-]{1,7}/g, ' ');
-      console.log(tmp);
+      // console.log(tmp);
 
       return tmp;
     },
