@@ -73,13 +73,23 @@ html {
   display: block;
 }
 
+.datetime__time__hour,
+.datetime__time__minute {
+  position: absolute;
+  font-size: 110px;
+}
+
+.datetime__time__hour {
+  right: 130px;
+}
+
 .datetime__time__hour:after {
   content: ":";
 }
 
-.datetime__time__hour,
 .datetime__time__minute {
-  font-size: 110px;
+  left: 170px;
+  text-align: left;
 }
 
 .datetime__date__day,
