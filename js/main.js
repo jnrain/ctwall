@@ -1,4 +1,4 @@
-requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function($, QRCode) {
+requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.knob'], function($, QRCode) {
   'use strict';
 
   var CTWallConfig = {
@@ -18,8 +18,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
       hqc: "江大后勤管理处",
       bwch: "江大保卫处"
     },
-    QRCODE_DIMENSION: 150,
+    QRCODE_DIMENSION: 165,
     QRCODE_BACKGROUND: "#efd984",
+    PROGRESS_UPDATE_INTERVAL: 500,
     API_DOMAIN: "spider.api.jnrain.com",
     SHORT_URL_DOMAIN: "spurl.jnrain.com",
     SHORT_URL_INFIXED: false
@@ -31,7 +32,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
       qrcode: null,
       siteList: [],
       currentSiteIdx: null,
-      currentArticleIdx: null
+      currentArticleIdx: null,
+      articleProgressElem: null,
+      articleProgressTimer: null
     },
     durationFromArticle: function(article) {
       var length = article.content.length;
@@ -57,6 +60,21 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
           : article.url
           );
     },
+    progressTimerFromDuration: function(duration) {
+      var timeElapsed = 0,
+          timerFn = (function() {
+            timeElapsed += CTWallConfig.PROGRESS_UPDATE_INTERVAL;
+            if (timeElapsed > duration) {
+              CTWall.state.articleProgressTimer = null;
+              return;
+            }
+
+            CTWall.state.articleProgressElem.val(timeElapsed / duration * 100).trigger('change');
+            CTWall.state.articleProgressTimer = setTimeout(timerFn, CTWallConfig.PROGRESS_UPDATE_INTERVAL);
+          });
+
+      return timerFn;
+    },
     switchArticle: function(article) {
       $('.current-article__title').text(article.title);
 
@@ -80,6 +98,12 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
       var duration = CTWall.durationFromArticle(article);
       console.log('[ctwall] Next article in ' + duration.toString() + 'ms');
       setTimeout(CTWall.nextArticle, duration);
+
+      // 重置文章进度指示
+      if (CTWall.state.articleProgressTimer !== null) {
+        clearTimeout(CTWall.state.articleProgressTimer);
+      }
+      (CTWall.progressTimerFromDuration(duration))();
     },
     makeSiteElement: function(source) {
       return $('<li />')
@@ -248,6 +272,10 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
           CTWall.initFeed();
         });
     },
+    initArticleProgress: function() {
+      $('.current-article__timer').knob();
+      CTWall.state.articleProgressElem = $('.current-article__timer');
+    },
     initFeed: function() {
       $.getJSON('//' + CTWallConfig.API_DOMAIN + '/v1/feed/month/')
       .done(function(data) {
@@ -364,6 +392,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen'], function(
         }, 1000);
       });
     })();
+
+    // 文章进度指示器
+    CTWall.initArticleProgress();
 
     // 初始化新闻条目信息
     CTWall.initMeta();

@@ -156,7 +156,7 @@ html {
   font-weight: bold;
   text-align: center;
 
-  padding: 0 160px 0;
+  padding: 0 0 0 175px;  /* 二维码宽度 (165px) + 10px */
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
       -ms-box-sizing: border-box;
@@ -173,9 +173,22 @@ html {
 
 .current-article__qrcode {
   float: left;
-  width: 150px;
-  height: 150px;
-  margin: 45px 0.5em 0 0;
+  width: 165px;
+  height: 165px;
+  margin: 0 0.5em 0 0;
+}
+
+.current-article__timer-container {
+    position: absolute;
+    top: 63px;
+    left: 68px;
+
+    width: 45px;
+    height: 45px;
+
+    background-color: #efd984;
+    border-radius: 45px;  /* 足够大, 让元素变成圆形 */
+    padding: 6px;
 }
 
 .current-article__content {
