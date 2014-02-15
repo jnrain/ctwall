@@ -138,6 +138,60 @@ html {
   font-size: 28px;
 }
 
+.header-middle-container {
+  position: absolute;
+  bottom: 0;
+  left: 380px;
+  right: 500px;
+}
+
+.loading-indicator {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  width: 165px;
+  margin: 0 auto;
+
+  border: 2px solid #2a1710;
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  padding: 0 6px;
+
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+  font-size: 16px;
+
+  -webkit-opacity: 0;
+     -moz-opacity: 0;
+      -ms-opacity: 0;
+       -o-opacity: 0;
+          opacity: 0;
+
+  /* 淡出效果 */
+  -webkit-transition: opacity 0.75s;
+     -moz-transition: opacity 0.75s;
+      -ms-transition: opacity 0.75s;
+       -o-transition: opacity 0.75s;
+          transition: opacity 0.75s;
+}
+
+.loading-indicator.visible {
+  -webkit-opacity: 1;
+     -moz-opacity: 1;
+      -ms-opacity: 1;
+       -o-opacity: 1;
+          opacity: 1;
+
+  /* 不要淡入 */
+  -webkit-transition: none;
+     -moz-transition: none;
+      -ms-transition: none;
+       -o-transition: none;
+          transition: none;
+}
+
 .content-container {
   position: absolute;
   top: 112px;

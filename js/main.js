@@ -401,6 +401,18 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
         container.removeClass('visible');
       }
     },
+    setLoadingIndicatorVisibility: function(visible) {
+      var loadingElem = $('.loading-indicator'),
+          loadingIconElem = $('.loading-indicator__icon');
+
+      if (visible) {
+        loadingElem.addClass('visible');
+        loadingIconElem.addClass('fa-spin');
+      } else {
+        loadingElem.removeClass('visible');
+        loadingIconElem.removeClass('fa-spin');
+      }
+    },
     maybeInitQRCode: function() {
       if (CTWall.state.qrcode !== null) {
         // 已经初始化过了, 什么都不干
@@ -443,6 +455,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       CTWall.state.articleProgressElem = $('.current-article__timer');
     },
     initFeed: function() {
+      // 显示加载提示
+      CTWall.setLoadingIndicatorVisibility(true);
+
       $.getJSON('//' + CTWallConfig.API_DOMAIN + '/v1/feed/month/')
       .done(function(data) {
         console.log('[ctwall] Got feed:', data);
@@ -454,6 +469,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
 
         // 调用失败处理
         CTWall.onFeedRequestFailure();
+      }).always(function() {
+        // 无论加载成功或失败都隐藏加载提示
+        CTWall.setLoadingIndicatorVisibility(false);
       });
     }
   };
