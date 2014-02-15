@@ -241,8 +241,10 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
         siteArticles = CTWall.state.articles[CTWall.state.siteList[CTWall.state.currentSiteIdx]];
         newArticleIdx = 0;
       } else {
-        // 上滚一篇文章
-        CTWall.scrollUpOne('.current-site__news-items');
+        // 如果不是第一篇, 就上滚一篇文章
+        if (newArticleIdx !== 0) {
+          CTWall.scrollUpOne('.current-site__news-items');
+        }
       }
 
       // 取出并切换到下一篇文章
