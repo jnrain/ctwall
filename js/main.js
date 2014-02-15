@@ -304,6 +304,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       CTWall.updateLastRequestTimeDisplay(CTWall.state.lastRequestTime);
 
       // 对文章分类
+      CTWall.state.articles = {};
       var articleList = data.l;
 
       articleList.forEach(function(article) {
