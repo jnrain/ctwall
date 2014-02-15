@@ -278,11 +278,7 @@ html {
   padding: 2px 0px 2px 4px;
 }
 
-.screen-footer {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-
+.bottom-overlay {
   font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
   font-size: 13px;
   line-height: 1.2;
@@ -291,6 +287,24 @@ html {
   border-radius: 8px;
   background-color: rgba(239, 217, 132, 0.875);
   box-shadow: 0px 0px 2px rgba(239, 217, 132, 0.875);
+}
+
+.last-fetch-time {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+
+.last-fetch-time:before {
+  display: inline-block;
+  content: "信息更新时间:";
+  margin: 0 4px 0 0;
+}
+
+.screen-footer {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
 
 .screen-footer > a {

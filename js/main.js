@@ -43,6 +43,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       currentArticleIdx: null,
       articleProgressElem: null,
       articleProgressTimer: null,
+      lastRequestTime: null,
       lastRequestFailed: false,
       lastRequestRetryWaitDuration: 0
     },
@@ -285,12 +286,17 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       CTWall.populateArticleList(CTWall.state.articles, newSource);
     },
     onFeedRequestSuccess: function(data) {
+      CTWall.state.lastRequestTime = new Date();
+
       CTWall.state.lastRequestFailed = false;
       // 隐藏加载失败提示
       CTWall.setLoadErrorVisibility(false);
 
       // 初始化 QRCode
       CTWall.maybeInitQRCode();
+
+      // 刷新最近更新时间
+      CTWall.updateLastRequestTimeDisplay(CTWall.state.lastRequestTime);
 
       // 对文章分类
       var articleList = data.l;
@@ -326,6 +332,14 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       CTWall.state.currentSiteIdx = 0;
       CTWall.state.currentArticleIdx = -1;
       CTWall.nextArticle();
+    },
+    updateLastRequestTimeDisplay: function(date) {
+      $('.last-fetch-time').text(
+          date.toLocaleDateString()
+          + ' ' + zeropad(date.getHours())
+          + ':' + zeropad(date.getMinutes())
+          + ':' + zeropad(date.getSeconds())
+          );
     },
     onFeedRequestFailure: function() {
       // 显示加载失败提示
