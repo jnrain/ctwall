@@ -309,4 +309,80 @@ html {
   margin: 0 2px -2px;
 }
 
+
+/* 错误信息显示区域 */
+.load-error-outer-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  /* 正常情况下完全不显示 */
+  display: none;
+}
+
+.load-error-outer-container.visible {
+  display: block;
+}
+
+.load-error-middle-container {
+  display: table;
+
+  width: 100%;
+  height: 100%;
+}
+
+.load-error-inner-container {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.load-error-container {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  /* 这个块本身是水平垂直居中在文章容器里的, 但它的内容也要水平垂直居中! */
+  display: table;
+
+  width: 500px;
+  height: 300px;
+  margin: 0 auto;
+
+  background: rgba(239, 217, 132, 0.875);
+  border-radius: 32px;
+  border: 2px solid #2a1710;
+  padding: 24px;
+}
+
+.load-error {
+  display: table-cell;
+  vertical-align: middle;
+
+  text-align: center;
+}
+
+.load-error__title-container {
+  font-size: 48px;
+
+  display: table;
+  margin: 0 auto 20px;
+}
+
+.load-error__title__icon,
+.load-error__title {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.load-error__title {
+  padding: 0 0 0 20px;
+
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+}
+
+
 /* vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: */

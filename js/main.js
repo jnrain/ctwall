@@ -29,7 +29,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
     PROGRESS_UPDATE_INTERVAL: 500,
     API_DOMAIN: "spider.api.jnrain.com",
     SHORT_URL_DOMAIN: "spurl.jnrain.com",
-    SHORT_URL_INFIXED: false
+    SHORT_URL_INFIXED: false,
+    RETRY_INITIAL_WAIT_DURATION: 4000,
+    RETRY_EXPONENTIAL_BACKOFF_MULTIPLIER: 1.25
   };
 
   var CTWall = {
@@ -40,7 +42,9 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       currentSiteIdx: null,
       currentArticleIdx: null,
       articleProgressElem: null,
-      articleProgressTimer: null
+      articleProgressTimer: null,
+      lastRequestFailed: false,
+      lastRequestRetryWaitDuration: 0
     },
     normalizeContent: function(s) {
       var tmp = s;
@@ -280,7 +284,115 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       // 更新站点内新闻列表
       CTWall.populateArticleList(CTWall.state.articles, newSource);
     },
-    initQRCode: function() {
+    onFeedRequestSuccess: function(data) {
+      CTWall.state.lastRequestFailed = false;
+      // 隐藏加载失败提示
+      CTWall.setLoadErrorVisibility(false);
+
+      // 初始化 QRCode
+      CTWall.maybeInitQRCode();
+
+      // 对文章分类
+      var articleList = data.l;
+
+      articleList.forEach(function(article) {
+        var sourceMaybe = CTWall.state.articles[article.source];
+
+        if (typeof sourceMaybe === 'undefined') {
+          CTWall.state.articles[article.source] = [];
+        }
+
+        CTWall.state.articles[article.source].push(article);
+      });
+
+      // 敲掉新闻网
+      // TODO: 更恰当的处理, 比如只在某时间段播放新闻
+      if (typeof CTWall.state.articles['xinwen'] !== 'undefined') {
+        delete CTWall.state.articles['xinwen'];
+      }
+
+      // 初始化站点列表
+      CTWall.state.siteList = [];
+      for (var siteName in CTWall.state.articles) {
+        CTWall.state.siteList.push(siteName);
+      }
+      CTWall.populateSites(CTWall.state.siteList);
+
+      // 初始化第一个站点的文章列表
+      CTWall.populateArticleList(CTWall.state.articles, CTWall.state.siteList[0]);
+
+      // 开始文章显示
+      // 让当前文章处于第 0 站的第 -1 篇文章, 于是下一篇就是第 0 篇了
+      CTWall.state.currentSiteIdx = 0;
+      CTWall.state.currentArticleIdx = -1;
+      CTWall.nextArticle();
+    },
+    onFeedRequestFailure: function() {
+      // 显示加载失败提示
+      CTWall.setLoadErrorVisibility(true);
+
+      // 计算下次重试时间
+      var waitDuration = CTWall.calculateRetryWaitDuration(CTWall.state.lastRequestRetryWaitDuration);
+      CTWall.state.lastRequestRetryWaitDuration = waitDuration;
+
+      // 启动重试倒计时
+      setTimeout(CTWall.makeRetryTimer(waitDuration), 1000);
+
+      CTWall.state.lastRequestFailed = true;
+    },
+    calculateRetryWaitDuration: function(lastDuration) {
+      if (CTWall.state.lastRequestFailed) {
+        // 上次请求也失败了, 指数退避 (exponential backoff)
+        return lastDuration * CTWallConfig.RETRY_EXPONENTIAL_BACKOFF_MULTIPLIER;
+      }
+
+      // 返回初始重试时间间隔
+      return CTWallConfig.RETRY_INITIAL_WAIT_DURATION;
+    },
+    retryFeedRequest: function() {
+      // 恶趣味, 旋转面无表情图标
+      // 其实是给用户一些视觉反馈
+      $('.load-error__title__icon').addClass('fa-spin');
+
+      // 重新发送请求
+      CTWall.initFeed();
+    },
+    makeRetryTimer: function(duration) {
+      var remaining = duration;
+
+      var timerFn = (function() {
+        remaining -= 1000;
+        if (remaining <= 0) {
+          // 重试请求
+          CTWall.retryFeedRequest();
+          return;
+        }
+
+        // 更新时间显示
+        $('.load-error__retry-in').text('' + Math.floor(remaining / 1000));
+        setTimeout(timerFn, 1000);
+      });
+
+      return timerFn;
+    },
+    setLoadErrorVisibility: function(visible) {
+      // 总之让可能在旋转的图标停下来
+      $('.load-error__title__icon').removeClass('fa-spin');
+
+      // 显示或者隐藏加载失败提示
+      var container = $('.load-error-outer-container');
+      if (visible) {
+        container.addClass('visible');
+      } else {
+        container.removeClass('visible');
+      }
+    },
+    maybeInitQRCode: function() {
+      if (CTWall.state.qrcode !== null) {
+        // 已经初始化过了, 什么都不干
+        return;
+      }
+
       // 注意必须传入原生 DOM 元素
       CTWall.state.qrcode = new QRCode(
           $('.current-article__qrcode')[0],
@@ -321,45 +433,13 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       .done(function(data) {
         console.log('[ctwall] Got feed:', data);
 
-        // 初始化 QRCode
-        CTWall.initQRCode();
-
-        // 对文章分类
-        var articleList = data.l;
-
-        articleList.forEach(function(article) {
-          var sourceMaybe = CTWall.state.articles[article.source];
-
-          if (typeof sourceMaybe === 'undefined') {
-            CTWall.state.articles[article.source] = [];
-          }
-
-          CTWall.state.articles[article.source].push(article);
-        });
-
-        // 敲掉新闻网
-        // TODO: 更恰当的处理, 比如只在某时间段播放新闻
-        if (typeof CTWall.state.articles['xinwen'] !== 'undefined') {
-          delete CTWall.state.articles['xinwen'];
-        }
-
-        // 初始化站点列表
-        CTWall.state.siteList = [];
-        for (var siteName in CTWall.state.articles) {
-          CTWall.state.siteList.push(siteName);
-        }
-        CTWall.populateSites(CTWall.state.siteList);
-
-        // 初始化第一个站点的文章列表
-        CTWall.populateArticleList(CTWall.state.articles, CTWall.state.siteList[0]);
-
-        // 开始文章显示
-        // 让当前文章处于第 0 站的第 -1 篇文章, 于是下一篇就是第 0 篇了
-        CTWall.state.currentSiteIdx = 0;
-        CTWall.state.currentArticleIdx = -1;
-        CTWall.nextArticle();
+        // 准备新一轮文章展示
+        CTWall.onFeedRequestSuccess(data);
       }).fail(function() {
         console.log('feed request failed');
+
+        // 调用失败处理
+        CTWall.onFeedRequestFailure();
       });
     }
   };
