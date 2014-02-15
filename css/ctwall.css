@@ -284,7 +284,7 @@ html {
   right: 5px;
 
   font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.2;
 
   padding: 6px 4px 6px 10px;
@@ -301,5 +301,12 @@ html {
   margin: 0 0 -1px 0;
 }
 
+.makefont-logo {
+  display: inline-block;
+  width: 46px;
+  height: 13px;
+  background: url("//static.jnrain.com/common/img/vendors/makefont-logo-46x13.png") no-repeat;
+  margin: 0 2px -2px;
+}
 
 /* vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: */
