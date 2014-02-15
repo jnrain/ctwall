@@ -460,7 +460,7 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
       // 显示加载提示
       CTWall.setLoadingIndicatorVisibility(true);
 
-      $.getJSON('//' + CTWallConfig.API_DOMAIN + '/v1/feed/month/')
+      $.getJSON('//' + CTWallConfig.API_DOMAIN + '/v1/feed/week/')
       .done(function(data) {
         console.log('[ctwall] Got feed:', data);
 
