@@ -264,14 +264,17 @@ requirejs(['jquery', 'qrcode', 'jquery.transit', 'jquery.fullscreen', 'jquery.kn
     nextSite: function() {
       var newSiteIdx = CTWall.state.currentSiteIdx + 1;
       if (newSiteIdx == CTWall.state.siteList.length) {
-        // 已经没有下一个站了, 滚回第一个
-        newSiteIdx = 0;
-
+        // 已经没有下一个站了, 准备进行下一次请求
         // 让站点列表向上滚动一格
         CTWall.scrollUpOne('.article-nav__sites', function() {
           // 重置站点列表元素的位置
           $('.article-nav__sites').css('top', '0');
+
+          // 获取下一组文章
+          CTWall.initFeed();
         });
+
+        return;
       } else {
         // 让站点列表向上滚动一格
         CTWall.scrollUpOne('.article-nav__sites');
