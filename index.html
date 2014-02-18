@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cmn">
+<head>
+  <meta charset="utf-8" />
+  <title>江南听雨餐厅墙</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="江南听雨网校内信息服务频道餐厅墙项目">
+  <meta name="author" content="JNRain">
+
+  <!-- kill IE -->
+  <!--[if IE]>
+  <script>location.href = "http://static.jnrain.com/web/no-ie/";</script>
+  <![endif]-->
+
+  <!-- styles -->
+  <link rel="stylesheet" href="//static.jnrain.com/common/css/normalize.css" />
+  <link rel="stylesheet" href="//static.jnrain.com/common/css/reset.css" />
+  <link rel="stylesheet" href="//static.jnrain.com/common/css/clear.css" />
+  <link rel="stylesheet" href="//static.jnrain.com/common/css/font-awesome.css" />
+
+  <link rel="stylesheet" href="css/ctwall.css" />
+
+  <!-- framework js -->
+  <script src="//static.jnrain.com/common/js/config.js"></script>
+  <script src="//static.jnrain.com/common/js/require.js"></script>
+</head>
+<body>
+<div class="screen">
+  <header class="screen-header">
+    <div class="screen-header__logo">
+      <span class="screen-header__logo__title">江南听雨网</span>
+      <span class="screen-header__logo__subtitle">校内信息服务频道</span>
+    </div>
+
+    <div class="screen-header__datetime">
+      <span class="datetime__time">
+        <span class="datetime__time__hour"></span>
+        <span class="datetime__time__minute"></span>
+      </span>
+      <span class="datetime__date">
+        <span class="datetime__date__month"></span>
+        <span class="datetime__date__day"></span>
+      </span>
+      <span class="datetime__weekday"></span>
+    </div>
+
+    <div class="header-middle-container">
+      <div class="loading-indicator">
+        <i class="loading-indicator__icon fa fa-spinner"></i>
+        正在加载最新信息
+      </div>
+    </div>
+  </header>
+
+  <div class="content-container">
+    <article class="current-article">
+      <section class="current-article__qrcode-container">
+        <section class="current-article__qrcode">
+        </section>
+        <div class="current-article__timer-container">
+          <div class="current-article__timer"
+            data-width="45"
+            data-height="45"
+            data-displayInput="false"
+            data-readOnly="true"
+            data-fgColor="#2a1710"
+            data-bgColor="transparent"
+            >
+          </div>
+        </div>
+      </section>
+      <h1 class="current-article__title"></h1>
+      <span class="current-article__time"></span>
+      <section class="current-article__content">
+      </section>
+
+      <div class="bottom-overlay last-fetch-time">
+      </div>
+
+      <div class="load-error-outer-container">
+        <div class="load-error-middle-container">
+          <div class="load-error-inner-container">
+            <div class="load-error-container">
+              <div class="load-error">
+                <header class="load-error__title-container">
+                  <i class="load-error__title__icon fa fa-meh-o fa-2x"></i>
+                  <h2 class="load-error__title">频道后台繁忙</h2>
+                </header>
+                <p>服务器没有及时返回新鲜的文章数据供显示。</p>
+                <p>将于 <span class="load-error__retry-in"></span> 秒后尝试重新请求。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <aside class="article-nav">
+      <section class="article-nav__current-site">
+        <div class="current-site__site-name-container">
+          <!-- 在程序取得第一组文章之前也撑满元素高度 -->
+          <h2 class="current-site__site-name">&nbsp;</h2>
+          <i class="current-site__site-name__arrow fa fa-caret-right"></i>
+        </div>
+        <div class="current-site__news-items-container">
+          <ul class="current-site__news-items">
+            <!-- <li class="current-site__news-items__item"></li> -->
+          </ul>
+        </div>
+      </section>
+      <div class="article-nav__sites-container">
+        <ul class="article-nav__sites">
+          <!-- <li class="article-nav__sites__site"></li> -->
+        </ul>
+      </div>
+    </aside>
+    <footer class="screen-footer bottom-overlay">
+      &copy; 2014 江南听雨网.
+      本页应用的雅圆字体由<a href="http://makefont.com"><i class="makefont-logo"></i></a>提供.
+    </footer>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+<!-- vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: -->
+</html>

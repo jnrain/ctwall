@@ -1,0 +1,469 @@
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  font: 20px/1.5 "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  background-color: #efd984;
+  color: #2a1710;
+}
+
+.screen {
+  height: 100%;
+  width: 100%;
+}
+
+.screen-header {
+  /* background-color: #111; */
+  border-bottom: 2px solid #2a1710;
+  height: 110px;
+  position: relative;
+}
+
+.screen-header__logo {
+  bottom: 7px;
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+  left: 7px;
+  line-height: 1;
+  position: absolute;
+  top: 7px;
+  width: 400px;
+}
+
+.screen-header__logo__title,
+.screen-header__logo__subtitle {
+  position: absolute;
+}
+
+.screen-header__logo__title {
+  font-size: 60px;
+  letter-spacing: 10px;
+}
+
+.screen-header__logo__subtitle {
+  bottom: 0;
+  font-size: 30px;
+  letter-spacing: 14px;
+}
+
+.screen-header__datetime {
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+  font-size: 0;
+  line-height: 1;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+
+.datetime__time {
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+
+  position: absolute;
+  right: 200px;
+  top: -3px;
+
+  width: 300px;
+}
+
+.datetime__time,
+.datetime__date,
+.datetime__weekday {
+  display: block;
+}
+
+.datetime__time__hour,
+.datetime__time__minute {
+  position: absolute;
+  font-size: 110px;
+}
+
+.datetime__time__hour {
+  right: 130px;
+}
+
+.datetime__time__hour:after {
+  content: ":";
+}
+
+.datetime__time__minute {
+  left: 170px;
+  text-align: left;
+}
+
+.datetime__date__day,
+.datetime__date__month,
+.datetime__weekday {
+  font-size: 48px;
+}
+
+.datetime__date {
+  position: absolute;
+  right: 15px;
+  text-align: right;
+  top: 5px;
+  width: 200px;
+}
+
+.datetime__weekday {
+  position: absolute;
+
+  /*
+   * 为了和上边的日期宽度相称, 需要 6px 的 letter-spacing, 宽度就会多出来 6px.
+   * 需要补偿
+   */
+  right: 12px;  /* 18 - 6, 视觉上和上方日期元素的右侧一致 */
+  text-align: right;
+  letter-spacing: 6px;
+  top: 55px;
+  width: 200px;  /* 留够空间 */
+}
+
+.datetime__weekday:before {
+  content: "星期";
+  display: inline;
+}
+
+.datetime__date__month:after {
+  content: "月";
+}
+
+.datetime__date__day:after {
+  content: "日";
+}
+
+.datetime__date__month:after,
+.datetime__date__day:after {
+  font-size: 28px;
+}
+
+.header-middle-container {
+  position: absolute;
+  bottom: 0;
+  left: 380px;
+  right: 500px;
+}
+
+.loading-indicator {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  width: 165px;
+  margin: 0 auto;
+
+  border: 2px solid #2a1710;
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  padding: 0 6px;
+
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+  font-size: 16px;
+
+  -webkit-opacity: 0;
+     -moz-opacity: 0;
+      -ms-opacity: 0;
+       -o-opacity: 0;
+          opacity: 0;
+
+  /* 淡出效果 */
+  -webkit-transition: opacity 0.75s;
+     -moz-transition: opacity 0.75s;
+      -ms-transition: opacity 0.75s;
+       -o-transition: opacity 0.75s;
+          transition: opacity 0.75s;
+}
+
+.loading-indicator.visible {
+  -webkit-opacity: 1;
+     -moz-opacity: 1;
+      -ms-opacity: 1;
+       -o-opacity: 1;
+          opacity: 1;
+
+  /* 不要淡入 */
+  -webkit-transition: none;
+     -moz-transition: none;
+      -ms-transition: none;
+       -o-transition: none;
+          transition: none;
+}
+
+.content-container {
+  position: absolute;
+  top: 112px;
+  bottom: 0;
+  width: 100%;
+}
+
+.current-article {
+  position: relative;
+  float: right;
+  width: 75%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  padding: 0.5em;
+
+  overflow: hidden;
+}
+
+.current-article__title {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+}
+
+.current-article__qrcode-container,
+.current-article__qrcode {
+  width: 165px;
+  height: 165px;
+}
+
+.current-article__qrcode-container {
+  position: relative;
+  float: left;
+  margin: 0 1em 0 0;
+}
+
+.current-article__timer-container {
+    position: absolute;
+    top: 53px;
+    left: 58px;
+
+    width: 45px;
+    height: 45px;
+
+    background-color: #efd984;
+    border-radius: 45px;  /* 足够大, 让元素变成圆形 */
+    padding: 6px;
+}
+
+.current-article__time {
+  display: block;
+  font-size: 75%;
+  text-align: center;
+}
+
+/*
+.current-article__time:before {
+  content: "发布时间: ";
+}
+*/
+
+.current-article__content {
+  text-indent: 2em;
+}
+
+.article-nav {
+  /* background-color: #111; */
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  border-right: 2px solid #2a1710;
+  float: left;
+  width: 25%;
+  height: 100%;
+}
+
+.article-nav__current-site,
+.article-nav__sites-container {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+.article-nav__current-site {
+  border-bottom: 2px solid #2a1710;
+
+  height: 62%;
+}
+
+.article-nav__sites-container {
+  height: 38%;
+}
+
+.current-site__site-name-container,
+.current-site__news-items-container,
+.article-nav__sites-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.current-site__site-name,
+.current-site__news-items,
+.article-nav__sites {
+  position: relative;
+
+  /* 设置动画效果的初始值, 否则第一次不会触发渐变效果 */
+  top: 0;
+  left: 0;
+}
+
+.current-site__site-name,
+.article-nav__sites__site,
+.current-site__site-name__arrow {
+  font-size: 150%;
+  padding: 0.2em 0 0.2em 0.25em;
+}
+
+.current-site__site-name,
+.article-nav__sites__site {
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+}
+
+.current-site__site-name-container {
+  background-color: #2a1710;
+  color: #efd984;
+}
+
+.current-site__site-name__arrow {
+  position: absolute;
+  top: 0;
+  right: 10px;
+
+  line-height: inherit;
+}
+
+.current-site__news-items__item {
+  font-size: 14px;
+  white-space: nowrap;
+  padding: 2px 0px 2px 4px;
+}
+
+.bottom-overlay {
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+  font-size: 13px;
+  line-height: 1.2;
+
+  padding: 6px 4px 6px 10px;
+  border-radius: 8px;
+  background-color: rgba(239, 217, 132, 0.875);
+  box-shadow: 0px 0px 2px rgba(239, 217, 132, 0.875);
+}
+
+.last-fetch-time {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+
+.last-fetch-time:before {
+  display: inline-block;
+  content: "信息更新时间:";
+  margin: 0 4px 0 0;
+}
+
+.screen-footer {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.screen-footer > a {
+  display: inline-block;
+  border-bottom: 1px solid rgba(42, 23, 16, 0.875);
+
+  /* 为了不影响高度计算 */
+  margin: 0 0 -1px 0;
+}
+
+.makefont-logo {
+  display: inline-block;
+  width: 46px;
+  height: 13px;
+  background: url("//static.jnrain.com/common/img/vendors/makefont-logo-46x13.png") no-repeat;
+  margin: 0 2px -2px;
+}
+
+
+/* 错误信息显示区域 */
+.load-error-outer-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  /* 正常情况下完全不显示 */
+  display: none;
+}
+
+.load-error-outer-container.visible {
+  display: block;
+}
+
+.load-error-middle-container {
+  display: table;
+
+  width: 100%;
+  height: 100%;
+}
+
+.load-error-inner-container {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.load-error-container {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+
+  /* 这个块本身是水平垂直居中在文章容器里的, 但它的内容也要水平垂直居中! */
+  display: table;
+
+  width: 500px;
+  height: 300px;
+  margin: 0 auto;
+
+  background: rgba(239, 217, 132, 0.875);
+  border-radius: 32px;
+  border: 2px solid #2a1710;
+  padding: 24px;
+}
+
+.load-error {
+  display: table-cell;
+  vertical-align: middle;
+
+  text-align: center;
+}
+
+.load-error__title-container {
+  font-size: 48px;
+
+  display: table;
+  margin: 0 auto 20px;
+}
+
+.load-error__title__icon,
+.load-error__title {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.load-error__title {
+  padding: 0 0 0 20px;
+
+  font-family: "MF YaYuan (Noncommercial)", "造字工房雅圆（非商用）常规体", sans-serif;
+}
+
+
+/* vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8: */
